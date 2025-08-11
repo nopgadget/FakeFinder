@@ -7,7 +7,7 @@ class FakeFinderQuiz {
         this.selectedOption = null;
         this.imagePairs = null;
         this.fullMapping = null;
-        this.antiCheatEnabled = true; // Enable anti-cheat measures
+
         
         this.initializeEventListeners();
         this.initializeQuiz();
@@ -239,8 +239,7 @@ class FakeFinderQuiz {
         // Load first question
         this.loadQuestion();
         
-        // Enable anti-cheat measures when quiz starts
-        this.enableAntiCheat();
+
         
         // Add entrance animation for quiz
         const quizContainer = document.getElementById('quizContainer');
@@ -508,77 +507,6 @@ class FakeFinderQuiz {
         
         // Update question count
         document.getElementById('questionCount').textContent = this.currentQuestion + 1;
-    }
-
-    // Anti-cheat measures
-    enableAntiCheat() {
-        if (!this.antiCheatEnabled) return;
-        
-        // Disable right-click context menu
-        document.addEventListener('contextmenu', (e) => e.preventDefault());
-        
-        // Disable F12, Ctrl+Shift+I, Ctrl+U
-        document.addEventListener('keydown', (e) => {
-            if (
-                e.key === 'F12' ||
-                (e.ctrlKey && e.shiftKey && e.key === 'I') ||
-                (e.ctrlKey && e.key === 'u') ||
-                (e.ctrlKey && e.key === 'U')
-            ) {
-                e.preventDefault();
-                this.showAntiCheatWarning();
-            }
-        });
-        
-        // Disable developer tools detection
-        let devtools = { open: false, orientation: null };
-        setInterval(() => {
-            const threshold = 160;
-            if (window.outerHeight - window.innerHeight > threshold || 
-                window.outerWidth - window.innerWidth > threshold) {
-                if (!devtools.open) {
-                    devtools.open = true;
-                    this.showAntiCheatWarning();
-                }
-            } else {
-                devtools.open = false;
-            }
-        }, 500);
-        
-        // Disable image inspection
-        document.addEventListener('dragstart', (e) => e.preventDefault());
-        document.addEventListener('selectstart', (e) => e.preventDefault());
-    }
-
-    showAntiCheatWarning() {
-        const warning = document.createElement('div');
-        warning.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #ff4444;
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            z-index: 10000;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        `;
-        warning.innerHTML = `
-            <h3>⚠️ Anti-Cheat Warning</h3>
-            <p>Developer tools detected. Please close them to continue.</p>
-            <p>Attempting to cheat will result in quiz disqualification.</p>
-        `;
-        
-        document.body.appendChild(warning);
-        
-        setTimeout(() => {
-            if (warning.parentNode) {
-                warning.parentNode.removeChild(warning);
-            }
-        }, 3000);
     }
 }
 
