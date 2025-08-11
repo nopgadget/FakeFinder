@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FakeFinder Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎭 FakeFinder Quiz</h1>
+            <p>Can you spot the deepfake? Choose the image that looks most suspicious!</p>
+            <div class="score-display">
+                <span>Score: <span id="score">0</span></span>
+                <span>Questions: <span id="questionCount">0</span>/10</span>
+            </div>
+        </header>
+
+        <div class="welcome-screen" id="welcomeScreen">
+            <div class="welcome-content">
+                <h2 class="tagline">Can you Spot the DeepFake?</h2>
+                <p class="welcome-description">Test your ability to identify AI-generated facial images in this challenging quiz. You'll be shown two portrait images side by side - one real and one designated deepfake. Can you spot the deepfake?</p>
+                <div class="welcome-features">
+                    <div class="feature">
+                        <span class="feature-icon">🎯</span>
+                        <span>10 challenging questions</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🏆</span>
+                        <span>Track your score</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🔄</span>
+                        <span>Practice and improve</span>
+                    </div>
+                </div>
+                <button class="start-btn" id="startBtn">Start Quiz</button>
+            </div>
+        </div>
+
+        <main class="quiz-container" id="quizContainer" style="display: none;">
+            <div class="question-display">
+                <h2 id="questionText">Which image is the deepfake?</h2>
+            </div>
+
+            <div class="images-container">
+                <div class="image-option" data-option="1">
+                    <img id="image1" src="https://picsum.photos/400/300?random=1" alt="Option 1">
+                    <div class="image-overlay">
+                        <span class="option-label">A</span>
+                    </div>
+                </div>
+                <div class="image-option" data-option="2">
+                    <img id="image2" src="https://picsum.photos/400/300?random=2" alt="Option 2">
+                    <div class="image-overlay">
+                        <span class="option-label">B</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <button class="next-btn" id="nextBtn" style="display: none;">Next Question</button>
+        </main>
+
+        <div class="results" id="results" style="display: none;">
+            <h2>Quiz Complete! 🎉</h2>
+            <p>Final Score: <span id="finalScore">0</span>/10</p>
+            <button class="restart-btn" id="restartBtn">Try Again</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
