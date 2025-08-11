@@ -287,8 +287,8 @@ header p {
     margin: 0;
     height: fit-content;
     min-height: clamp(3vh, 6vh, 30px);
-    flex: 1;
-    max-width: 220px;
+    width: 200px;
+    white-space: nowrap;
 }
 
 .next-btn:hover {
@@ -341,7 +341,7 @@ header p {
 
 .results-buttons {
     display: flex;
-    gap: 8px;
+    gap: 16px;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
@@ -366,8 +366,8 @@ header p {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 1;
-    max-width: 220px;
+    width: 200px;
+    white-space: nowrap;
 }
 
 .home-btn:hover {
@@ -421,7 +421,7 @@ header p {
     
     .next-btn, .restart-btn, .home-btn {
         width: 100%;
-        max-width: 220px;
+        max-width: 280px;
         flex: none;
     }
 }
