@@ -31,13 +31,75 @@ class FakeFinderQuiz {
         
         const questions = [];
         
+        // Create a completely unique randomization approach
+        // Use multiple sources of randomness to ensure uniqueness
+        const timestamp = Date.now();
+        const performanceTime = performance.now();
+        const randomOffset = Math.floor(Math.random() * 10000);
+        const uniqueSeed = (timestamp + performanceTime + randomOffset) % 1000000;
+        
+        console.log(`🔀 Generating questions with unique seed: ${uniqueSeed} (timestamp: ${timestamp}, performance: ${performanceTime}, offset: ${randomOffset})`);
+        
+        // Create a completely shuffled copy of available pairs
+        const shuffledPairs = [...this.imagePairs];
+        this.shuffleArray(shuffledPairs);
+        
+        // If we have fewer pairs than questions, we'll need to reuse some, but still randomize
+        const availablePairs = shuffledPairs.length >= this.totalQuestions ? 
+            shuffledPairs.slice(0, this.totalQuestions) : 
+            shuffledPairs;
+        
+        // Create a completely random question order with additional randomization
+        const questionOrder = Array.from({length: this.totalQuestions}, (_, i) => i);
+        this.shuffleArray(questionOrder);
+        
+        // Create random deepfake positions with additional randomization
+        const deepfakePositions = [];
         for (let i = 0; i < this.totalQuestions; i++) {
-            // Randomly decide which position (1 = A, 2 = B) will contain the deepfake
-            const deepfakePosition = Math.random() < 0.5 ? 1 : 2;
+            // Use multiple random sources for position
+            const positionRandom = Math.random() + (uniqueSeed / 1000000) + (i * 0.1);
+            deepfakePositions.push(positionRandom < 0.5 ? 1 : 2);
+        }
+        
+        // Create a random pair selection order - ensure no duplicates within the same quiz
+        const pairSelectionOrder = [];
+        const usedPairs = new Set(); // Track used pairs to avoid duplicates
+        
+        for (let i = 0; i < this.totalQuestions; i++) {
+            let pairIndex;
+            let attempts = 0;
+            const maxAttempts = availablePairs.length * 2; // Prevent infinite loops
             
-            // Get a random image pair from the available pairs
-            const pairIndex = Math.floor(Math.random() * this.imagePairs.length);
-            const imagePair = this.imagePairs[pairIndex];
+            // Keep trying until we find an unused pair
+            do {
+                const pairRandom = Math.random() + (uniqueSeed / 1000000) + (i * 0.2) + (attempts * 0.1);
+                pairIndex = Math.floor(pairRandom * availablePairs.length) % availablePairs.length;
+                attempts++;
+                
+                // If we've tried too many times, just pick the first available unused pair
+                if (attempts > maxAttempts) {
+                    for (let j = 0; j < availablePairs.length; j++) {
+                        if (!usedPairs.has(j)) {
+                            pairIndex = j;
+                            break;
+                        }
+                    }
+                    break;
+                }
+            } while (usedPairs.has(pairIndex));
+            
+            // Mark this pair as used
+            usedPairs.add(pairIndex);
+            pairSelectionOrder.push(pairIndex);
+        }
+        
+        for (let i = 0; i < this.totalQuestions; i++) {
+            // Use pre-generated random deepfake position
+            const deepfakePosition = deepfakePositions[i];
+            
+            // Get image pair with enhanced randomization
+            const pairIndex = pairSelectionOrder[i];
+            const imagePair = availablePairs[pairIndex];
             
             // IMPORTANT: imagePair.primary is ALWAYS the real image, secondary is ALWAYS the fake image
             // We just randomize which position (A or B) gets the real vs fake
@@ -51,6 +113,7 @@ class FakeFinderQuiz {
                 console.log(`  Fake image: ${fakeImage}`);
                 console.log(`  Position A: ${deepfakePosition === 1 ? fakeImage : realImage}`);
                 console.log(`  Position B: ${deepfakePosition === 1 ? realImage : fakeImage}`);
+                console.log(`  Unique seed: ${uniqueSeed}, Pair index: ${pairIndex}, Selection order: ${pairSelectionOrder[i]}`);
             }
             
             questions.push({
@@ -64,6 +127,21 @@ class FakeFinderQuiz {
                 explanation: `Question ${i + 1}: Look for subtle inconsistencies in facial features, unusual patterns, or artifacts that might indicate AI generation.`
             });
         }
+        
+        console.log(`✅ Generated ${questions.length} questions with unique seed: ${uniqueSeed}`);
+        console.log(`📊 Pair selection order: [${pairSelectionOrder.join(', ')}]`);
+        console.log(`🎯 Deepfake positions: [${deepfakePositions.join(', ')}]`);
+        console.log(`🔍 Used pairs tracking: [${Array.from(usedPairs).join(', ')}]`);
+        console.log(`📝 Total available pairs: ${availablePairs.length}`);
+        
+        // Verify no duplicates in pair selection
+        const uniquePairs = new Set(pairSelectionOrder);
+        if (uniquePairs.size !== pairSelectionOrder.length) {
+            console.warn(`⚠️ WARNING: Duplicate pairs detected! Expected ${pairSelectionOrder.length} unique, got ${uniquePairs.size}`);
+        } else {
+            console.log(`✅ No duplicate pairs detected - all ${uniquePairs.size} pairs are unique`);
+        }
+        
         return questions;
     }
 
@@ -161,8 +239,15 @@ class FakeFinderQuiz {
 
     shuffleArray(array) {
         const shuffled = [...array];
+        // Use enhanced Fisher-Yates shuffle with multiple randomization sources
         for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
+            // Use multiple sources of randomness for better unpredictability
+            const baseRandom = Math.random();
+            const timeRandom = (Date.now() % 1000) / 1000;
+            const performanceRandom = (performance.now() % 1000) / 1000;
+            const combinedRandom = (baseRandom + timeRandom + performanceRandom) / 3;
+            
+            const j = Math.floor(combinedRandom * (i + 1));
             [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
         }
         return shuffled;
@@ -175,6 +260,16 @@ class FakeFinderQuiz {
             this.showLoadingState();
             return;
         }
+        
+        // Regenerate questions for a fresh quiz experience
+        if (this.imagePairs && this.imagePairs.length > 0) {
+            this.questions = this.generateQuestions();
+        }
+        
+        // Reset quiz state
+        this.currentQuestion = 0;
+        this.score = 0;
+        this.selectedOption = null;
         
         // Hide welcome screen and show quiz
         document.getElementById('welcomeScreen').style.display = 'none';
@@ -233,6 +328,21 @@ class FakeFinderQuiz {
 
         // Home button
         document.getElementById('homeBtn').addEventListener('click', () => this.goHome());
+
+        // Logo/Header click to return home from anywhere
+        const header = document.querySelector('header');
+        if (header) {
+            header.style.cursor = 'pointer';
+            header.addEventListener('click', () => this.goHome());
+            
+            // Add hover effect to indicate it's clickable
+            header.addEventListener('mouseenter', () => {
+                header.style.opacity = '0.8';
+            });
+            header.addEventListener('mouseleave', () => {
+                header.style.opacity = '1';
+            });
+        }
     }
 
     selectOption(selectedElement) {
@@ -321,6 +431,16 @@ class FakeFinderQuiz {
 
         // Update question text
         document.getElementById('questionText').textContent = `Question ${this.currentQuestion + 1}: Which portrait image is the deepfake? (One image is designated as the deepfake)`;
+        
+        // Update next button text based on question number
+        const nextBtn = document.getElementById('nextBtn');
+        if (this.currentQuestion === this.totalQuestions - 1) {
+            // Last question - show "Finish"
+            nextBtn.textContent = 'Finish';
+        } else {
+            // Not last question - show "Next Question"
+            nextBtn.textContent = 'Next Question';
+        }
     }
 
     showResults() {

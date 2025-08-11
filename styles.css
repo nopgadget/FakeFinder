@@ -255,22 +255,48 @@ header p {
     color: #f56565;
 }
 
-.next-btn, .restart-btn {
+.next-btn {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
-    padding: clamp(1.5vh, 3vh, 15px) clamp(3vw, 6vw, 30px);
+    padding: clamp(1.5vh, 3vh, 15px) clamp(4vw, 8vw, 40px);
     border-radius: 25px;
     font-size: clamp(1rem, 2.5vw, 1.1rem);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     display: block;
-    margin: 0 auto;
-    margin-top: clamp(1vh, 2vh, 10px);
+    margin: clamp(1vh, 2vh, 10px) auto 0;
+    width: fit-content;
+    min-width: 200px;
 }
 
-.next-btn:hover, .restart-btn:hover {
+.restart-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: clamp(1.5vh, 3vh, 15px) clamp(4vw, 8vw, 40px);
+    border-radius: 25px;
+    font-size: clamp(1rem, 2.5vw, 1.1rem);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    height: fit-content;
+    min-height: clamp(3vh, 6vh, 30px);
+    flex: 1;
+    max-width: 220px;
+}
+
+.next-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.restart-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
@@ -286,39 +312,62 @@ header p {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .results h2 {
     font-size: clamp(2rem, 5vw, 2.5rem);
-    margin-bottom: clamp(1.5vh, 3vh, 20px);
+    margin-bottom: clamp(3vh, 5vh, 40px);
     color: #4a5568;
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .results p {
     font-size: clamp(1.2rem, 3.5vw, 1.5rem);
-    margin-bottom: clamp(2vh, 4vh, 30px);
+    margin-bottom: clamp(4vh, 6vh, 50px);
     color: #667eea;
     font-weight: 600;
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .results-buttons {
     display: flex;
-    gap: clamp(2vw, 4vw, 20px);
+    gap: 8px;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .home-btn {
     background: linear-gradient(135deg, #718096 0%, #4a5568 100%);
     color: white;
     border: none;
-    padding: clamp(1.5vh, 3vh, 15px) clamp(3vw, 6vw, 30px);
+    padding: clamp(1.5vh, 3vh, 15px) clamp(4vw, 8vw, 40px);
     border-radius: 25px;
     font-size: clamp(1rem, 2.5vw, 1.1rem);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 10px 25px rgba(113, 128, 150, 0.3);
+    height: fit-content;
+    min-height: clamp(3vh, 6vh, 30px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    max-width: 220px;
 }
 
 .home-btn:hover {
@@ -367,6 +416,13 @@ header p {
     .results-buttons {
         flex-direction: column;
         gap: clamp(1.5vh, 2vh, 15px);
+        align-items: center;
+    }
+    
+    .next-btn, .restart-btn, .home-btn {
+        width: 100%;
+        max-width: 220px;
+        flex: none;
     }
 }
 
