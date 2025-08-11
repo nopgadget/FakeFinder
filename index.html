@@ -11,7 +11,7 @@
         <header>
             <h1>🎭 FakeFinder Quiz</h1>
             <p>Can you spot the deepfake? Choose the image that looks most suspicious!</p>
-            <div class="score-display">
+            <div class="score-display" id="scoreDisplay" style="display: none;">
                 <span>Score: <span id="score" class="score-value">0</span>/5 (<span id="scorePercent" class="score-value">0%</span>)</span>
                 <span>Questions: <span id="questionCount" class="score-value">0</span>/5</span>
             </div>
@@ -67,7 +67,10 @@
         <div class="results" id="results" style="display: none;">
             <h2>Quiz Complete! 🎉</h2>
             <p>Final Score: <span id="finalScore" class="score-value">0</span>/5 (<span id="finalScorePercent" class="score-value">0%</span>)</p>
-            <button class="restart-btn" id="restartBtn">Try Again</button>
+            <div class="results-buttons">
+                <button class="restart-btn" id="restartBtn">Try Again</button>
+                <button class="home-btn" id="homeBtn">Home</button>
+            </div>
         </div>
     </div>
 

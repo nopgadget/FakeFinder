@@ -180,6 +180,9 @@ class FakeFinderQuiz {
         document.getElementById('welcomeScreen').style.display = 'none';
         document.getElementById('quizContainer').style.display = 'block';
         
+        // Show score display when quiz starts
+        document.getElementById('scoreDisplay').style.display = 'flex';
+        
         // Load first question
         this.loadQuestion();
         
@@ -227,6 +230,9 @@ class FakeFinderQuiz {
 
         // Restart button
         document.getElementById('restartBtn').addEventListener('click', () => this.restartQuiz());
+
+        // Home button
+        document.getElementById('homeBtn').addEventListener('click', () => this.goHome());
     }
 
     selectOption(selectedElement) {
@@ -364,10 +370,41 @@ class FakeFinderQuiz {
         // Reset displays
         this.updateScoreDisplay();
         
+        // Hide results and show quiz with new questions
+        document.getElementById('results').style.display = 'none';
+        document.getElementById('quizContainer').style.display = 'block';
+        
+        // Load first question of new quiz
+        this.loadQuestion();
+        
+        // Add entrance animation for quiz
+        const quizContainer = document.getElementById('quizContainer');
+        quizContainer.style.opacity = '0';
+        quizContainer.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            quizContainer.style.transition = 'all 0.8s ease';
+            quizContainer.style.opacity = '1';
+            quizContainer.style.transform = 'translateY(0)';
+        }, 100);
+    }
+
+    goHome() {
+        // Reset state
+        this.currentQuestion = 0;
+        this.score = 0;
+        this.selectedOption = null;
+        
+        // Reset displays
+        this.updateScoreDisplay();
+        
         // Show welcome screen, hide quiz and results
         document.getElementById('welcomeScreen').style.display = 'block';
         document.getElementById('quizContainer').style.display = 'none';
         document.getElementById('results').style.display = 'none';
+        
+        // Hide score display when returning to welcome screen
+        document.getElementById('scoreDisplay').style.display = 'none';
         
         // Add entrance animation for welcome screen
         const welcomeScreen = document.getElementById('welcomeScreen');

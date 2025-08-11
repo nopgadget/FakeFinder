@@ -9,41 +9,46 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     color: #333;
+    overflow-x: hidden;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 2vh 2vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 2vh;
     color: white;
+    flex-shrink: 0;
 }
 
 header h1 {
-    font-size: 3rem;
-    margin-bottom: 10px;
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin-bottom: 1vh;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
 header p {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    margin-bottom: 2vh;
     opacity: 0.9;
 }
 
 /* Score Display Styles */
 .score-display {
     display: flex;
-    gap: 20px;
+    gap: clamp(10px, 2vw, 20px);
     justify-content: center;
     align-items: center;
-    margin: 15px 0;
+    margin: 1.5vh 0;
     background: rgba(255, 255, 255, 0.1);
-    padding: 12px 24px;
+    padding: clamp(8px, 1.5vh, 12px) clamp(16px, 3vw, 24px);
     border-radius: 25px;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -52,13 +57,13 @@ header p {
 .score-display span {
     color: #fff;
     font-weight: 600;
-    font-size: 1rem; /* Match the header text size */
+    font-size: clamp(0.8rem, 2vw, 1rem);
 }
 
 .score-display .score-value {
     color: #4ade80;
     font-weight: bold;
-    font-size: 1rem; /* Same size as surrounding text */
+    font-size: clamp(0.8rem, 2vw, 1rem);
 }
 
 /* Results Score Display */
@@ -71,21 +76,26 @@ header p {
 .welcome-screen {
     background: white;
     border-radius: 20px;
-    padding: 60px 40px;
+    padding: clamp(3vh, 6vh, 60px) clamp(3vw, 5vw, 40px);
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
+    margin-bottom: 2vh;
     text-align: center;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .welcome-content {
     max-width: 600px;
     margin: 0 auto;
+    width: 100%;
 }
 
 .tagline {
-    font-size: 3rem;
+    font-size: clamp(2rem, 6vw, 3rem);
     color: #4a5568;
-    margin-bottom: 20px;
+    margin-bottom: 2vh;
     font-weight: 700;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     -webkit-background-clip: text;
@@ -94,17 +104,17 @@ header p {
 }
 
 .welcome-description {
-    font-size: 1.3rem;
+    font-size: clamp(1rem, 3vw, 1.3rem);
     color: #718096;
-    margin-bottom: 40px;
+    margin-bottom: clamp(2vh, 4vh, 40px);
     line-height: 1.6;
 }
 
 .welcome-features {
     display: flex;
     justify-content: center;
-    gap: 40px;
-    margin-bottom: 50px;
+    gap: clamp(2vw, 4vw, 40px);
+    margin-bottom: clamp(3vh, 5vh, 50px);
     flex-wrap: wrap;
 }
 
@@ -112,16 +122,16 @@ header p {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: clamp(0.5vh, 1vh, 10px);
     color: #4a5568;
 }
 
 .feature-icon {
-    font-size: 2.5rem;
+    font-size: clamp(2rem, 5vw, 2.5rem);
 }
 
 .feature span:last-child {
-    font-size: 1.1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
     font-weight: 600;
 }
 
@@ -129,9 +139,9 @@ header p {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
-    padding: 20px 40px;
+    padding: clamp(2vh, 4vh, 20px) clamp(4vw, 8vw, 40px);
     border-radius: 30px;
-    font-size: 1.3rem;
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -146,8 +156,9 @@ header p {
 .quiz-container {
     background: white;
     border-radius: 20px;
-    padding: 30px; /* Reduced from 40px */
+    padding: clamp(2vh, 4vh, 30px);
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    flex: 1;
     margin-bottom: 30px;
     max-height: 90vh; /* Prevent container from being too tall */
     overflow-y: auto; /* Add scroll only if absolutely necessary */
@@ -155,20 +166,20 @@ header p {
 
 .question-display {
     text-align: center;
-    margin-bottom: 20px; /* Reduced from 30px */
+    margin-bottom: clamp(1.5vh, 3vh, 20px);
 }
 
 .question-display h2 {
-    font-size: 1.6rem; /* Slightly smaller to save space */
-    margin-bottom: 15px;
+    font-size: clamp(1.2rem, 3.5vw, 1.6rem);
+    margin-bottom: clamp(1vh, 2vh, 15px);
     color: #4a5568;
 }
 
 .images-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    margin-bottom: 15px; /* Further reduce spacing */
+    gap: clamp(2vw, 4vw, 30px);
+    margin-bottom: clamp(1vh, 2vh, 15px);
 }
 
 .image-option {
@@ -188,24 +199,24 @@ header p {
 
 .image-option img {
     width: 100%;
-    height: 300px;
+    height: clamp(200px, 40vh, 300px);
     object-fit: cover;
     display: block;
 }
 
 .image-overlay {
     position: absolute;
-    top: 15px;
-    left: 15px;
+    top: clamp(10px, 2vh, 15px);
+    left: clamp(10px, 2vw, 15px);
     background: rgba(255,255,255,0.9);
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: clamp(30px, 6vw, 40px);
+    height: clamp(30px, 6vw, 40px);
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
     color: #667eea;
 }
 
@@ -226,14 +237,14 @@ header p {
 
 .feedback {
     text-align: center;
-    margin-bottom: 15px; /* Reduced from 20px */
-    min-height: 40px; /* Reduced from 60px */
+    margin-bottom: clamp(1vh, 2vh, 15px);
+    min-height: clamp(30px, 4vh, 40px);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem; /* Slightly smaller */
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
     font-weight: 600;
-    padding: 10px;
+    padding: clamp(8px, 1vh, 10px);
 }
 
 .feedback.correct {
@@ -248,15 +259,15 @@ header p {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
-    padding: 15px 30px;
+    padding: clamp(1.5vh, 3vh, 15px) clamp(3vw, 6vw, 30px);
     border-radius: 25px;
-    font-size: 1.1rem;
+    font-size: clamp(1rem, 2.5vw, 1.1rem);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     display: block;
     margin: 0 auto;
-    margin-top: 10px; /* Add small top margin */
+    margin-top: clamp(1vh, 2vh, 10px);
 }
 
 .next-btn:hover, .restart-btn:hover {
@@ -267,67 +278,95 @@ header p {
 .results {
     background: white;
     border-radius: 20px;
-    padding: 40px;
+    padding: clamp(3vh, 6vh, 40px);
     text-align: center;
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .results h2 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    margin-bottom: clamp(1.5vh, 3vh, 20px);
     color: #4a5568;
 }
 
 .results p {
-    font-size: 1.5rem;
-    margin-bottom: 30px;
+    font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+    margin-bottom: clamp(2vh, 4vh, 30px);
     color: #667eea;
     font-weight: 600;
+}
+
+.results-buttons {
+    display: flex;
+    gap: clamp(2vw, 4vw, 20px);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.home-btn {
+    background: linear-gradient(135deg, #718096 0%, #4a5568 100%);
+    color: white;
+    border: none;
+    padding: clamp(1.5vh, 3vh, 15px) clamp(3vw, 6vw, 30px);
+    border-radius: 25px;
+    font-size: clamp(1rem, 2.5vw, 1.1rem);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(113, 128, 150, 0.3);
+}
+
+.home-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(113, 128, 150, 0.4);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .container {
-        padding: 15px;
-    }
-    
-    header h1 {
-        font-size: 2rem;
+        padding: 1.5vh 1.5vw;
     }
     
     .welcome-screen {
-        padding: 40px 25px;
-    }
-    
-    .tagline {
-        font-size: 2.2rem;
+        padding: clamp(2vh, 4vh, 40px) clamp(2vw, 3vw, 25px);
     }
     
     .welcome-features {
-        gap: 25px;
+        gap: clamp(2vw, 3vw, 25px);
+        margin-bottom: clamp(2vh, 3vh, 30px);
     }
     
     .quiz-container {
-        padding: 20px; /* Even more compact on mobile */
+        padding: clamp(1.5vh, 3vh, 20px);
     }
     
     .images-container {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: clamp(2vh, 3vh, 20px);
     }
     
     .image-option img {
-        height: 250px;
+        height: clamp(180px, 35vh, 250px);
     }
     
     .score-display {
         flex-direction: column;
-        gap: 15px;
+        gap: clamp(1vh, 2vh, 15px);
     }
     
     .feedback {
-        min-height: 35px; /* More compact on mobile */
-        font-size: 1rem;
+        min-height: clamp(25px, 3vh, 35px);
+        font-size: clamp(0.8rem, 2.5vw, 1rem);
+    }
+    
+    .results-buttons {
+        flex-direction: column;
+        gap: clamp(1.5vh, 2vh, 15px);
     }
 }
 
