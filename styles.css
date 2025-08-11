@@ -42,25 +42,27 @@ header p {
     justify-content: center;
     align-items: center;
     margin: 15px 0;
-}
-
-.score-display span {
     background: rgba(255, 255, 255, 0.1);
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: 600;
-    color: #fff;
+    padding: 12px 24px;
+    border-radius: 25px;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-#scorePercent, #finalScorePercent {
+.score-display span {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem; /* Match the header text size */
+}
+
+.score-display .score-value {
     color: #4ade80;
     font-weight: bold;
+    font-size: 1rem; /* Same size as surrounding text */
 }
 
 /* Results Score Display */
-#finalScore, #finalScorePercent {
+.results .score-value {
     font-size: 1.5rem;
     font-weight: bold;
     color: #4ade80;
@@ -144,18 +146,21 @@ header p {
 .quiz-container {
     background: white;
     border-radius: 20px;
-    padding: 40px;
+    padding: 30px; /* Reduced from 40px */
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
     margin-bottom: 30px;
+    max-height: 90vh; /* Prevent container from being too tall */
+    overflow-y: auto; /* Add scroll only if absolutely necessary */
 }
 
 .question-display {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px; /* Reduced from 30px */
 }
 
 .question-display h2 {
-    font-size: 1.8rem;
+    font-size: 1.6rem; /* Slightly smaller to save space */
+    margin-bottom: 15px;
     color: #4a5568;
 }
 
@@ -163,7 +168,7 @@ header p {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 15px; /* Further reduce spacing */
 }
 
 .image-option {
@@ -221,13 +226,14 @@ header p {
 
 .feedback {
     text-align: center;
-    margin-bottom: 20px;
-    min-height: 60px;
+    margin-bottom: 15px; /* Reduced from 20px */
+    min-height: 40px; /* Reduced from 60px */
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1.1rem; /* Slightly smaller */
     font-weight: 600;
+    padding: 10px;
 }
 
 .feedback.correct {
@@ -250,6 +256,7 @@ header p {
     transition: all 0.3s ease;
     display: block;
     margin: 0 auto;
+    margin-top: 10px; /* Add small top margin */
 }
 
 .next-btn:hover, .restart-btn:hover {
@@ -301,7 +308,7 @@ header p {
     }
     
     .quiz-container {
-        padding: 25px;
+        padding: 20px; /* Even more compact on mobile */
     }
     
     .images-container {
@@ -316,6 +323,11 @@ header p {
     .score-display {
         flex-direction: column;
         gap: 15px;
+    }
+    
+    .feedback {
+        min-height: 35px; /* More compact on mobile */
+        font-size: 1rem;
     }
 }
 
@@ -350,7 +362,7 @@ header p {
     }
     
     .quiz-container {
-        padding: 20px;
+        padding: 15px; /* Most compact on small mobile */
     }
     
     .question-display h2 {
@@ -359,6 +371,11 @@ header p {
     
     .image-option img {
         height: 200px;
+    }
+    
+    .feedback {
+        min-height: 30px; /* Most compact on small mobile */
+        font-size: 0.95rem;
     }
 }
 
