@@ -44,10 +44,8 @@ class FakeFinderQuiz {
         const shuffledPairs = [...this.imagePairs];
         this.shuffleArray(shuffledPairs);
         
-        // If we have fewer pairs than questions, we'll need to reuse some, but still randomize
-        const availablePairs = shuffledPairs.length >= this.totalQuestions ? 
-            shuffledPairs.slice(0, this.totalQuestions) : 
-            shuffledPairs;
+        // Use ALL available pairs for maximum randomization
+        const availablePairs = shuffledPairs;
         
         // Create a completely random question order with additional randomization
         const questionOrder = Array.from({length: this.totalQuestions}, (_, i) => i);
@@ -133,6 +131,8 @@ class FakeFinderQuiz {
         console.log(`🎯 Deepfake positions: [${deepfakePositions.join(', ')}]`);
         console.log(`🔍 Used pairs tracking: [${Array.from(usedPairs).join(', ')}]`);
         console.log(`📝 Total available pairs: ${availablePairs.length}`);
+        console.log(`🎲 Using ${this.totalQuestions} questions from ${availablePairs.length} total pairs`);
+        console.log(`🔄 Randomization pool: ${availablePairs.length} pairs available for selection`);
         
         // Verify no duplicates in pair selection
         const uniquePairs = new Set(pairSelectionOrder);
