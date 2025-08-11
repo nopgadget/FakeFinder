@@ -35,12 +35,35 @@ header p {
     opacity: 0.9;
 }
 
+/* Score Display Styles */
 .score-display {
     display: flex;
+    gap: 20px;
     justify-content: center;
-    gap: 30px;
-    font-size: 1.1rem;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.score-display span {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 16px;
+    border-radius: 20px;
     font-weight: 600;
+    color: #fff;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#scorePercent, #finalScorePercent {
+    color: #4ade80;
+    font-weight: bold;
+}
+
+/* Results Score Display */
+#finalScore, #finalScorePercent {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4ade80;
 }
 
 .welcome-screen {
@@ -337,4 +360,33 @@ header p {
     .image-option img {
         height: 200px;
     }
+}
+
+/* Mapping Error Styles */
+.mapping-error {
+    margin: 20px 0;
+}
+
+.mapping-error div {
+    background: #fee;
+    border: 1px solid #fcc;
+    padding: 15px;
+    border-radius: 5px;
+    color: #c33;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.mapping-error code {
+    background: #fdd;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+}
+
+/* Loading State */
+#startBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
