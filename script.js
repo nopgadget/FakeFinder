@@ -7,6 +7,7 @@ class FakeFinderQuiz {
         this.selectedOption = null;
         this.imagePairs = null;
         this.fullMapping = null;
+        this.antiCheatEnabled = true; // Enable anti-cheat measures
         
         this.initializeEventListeners();
         this.initializeQuiz();
@@ -18,14 +19,11 @@ class FakeFinderQuiz {
         
         // Now generate questions with the loaded mapping
         this.questions = this.generateQuestions();
-        
-        console.log(`Quiz initialized with ${this.questions.length} questions`);
     }
 
     generateQuestions() {
         // Wait for image mapping to be loaded
         if (!this.imagePairs || this.imagePairs.length === 0) {
-            console.log('Image pairs not loaded yet, waiting...');
             return [];
         }
         
@@ -37,8 +35,6 @@ class FakeFinderQuiz {
         const performanceTime = performance.now();
         const randomOffset = Math.floor(Math.random() * 10000);
         const uniqueSeed = (timestamp + performanceTime + randomOffset) % 1000000;
-        
-        console.log(`🔀 Generating questions with unique seed: ${uniqueSeed} (timestamp: ${timestamp}, performance: ${performanceTime}, offset: ${randomOffset})`);
         
         // Create a completely shuffled copy of available pairs
         const shuffledPairs = [...this.imagePairs];
@@ -104,16 +100,6 @@ class FakeFinderQuiz {
             const realImage = imagePair.primary;      // Always the real image
             const fakeImage = imagePair.secondary;    // Always the fake image
             
-            // Debug: Log question setup for first few questions
-            if (i < 3) {
-                console.log(`Question ${i + 1}: Deepfake at position ${deepfakePosition} (${deepfakePosition === 1 ? 'A' : 'B'})`);
-                console.log(`  Real image: ${realImage}`);
-                console.log(`  Fake image: ${fakeImage}`);
-                console.log(`  Position A: ${deepfakePosition === 1 ? fakeImage : realImage}`);
-                console.log(`  Position B: ${deepfakePosition === 1 ? realImage : fakeImage}`);
-                console.log(`  Unique seed: ${uniqueSeed}, Pair index: ${pairIndex}, Selection order: ${pairSelectionOrder[i]}`);
-            }
-            
             questions.push({
                 id: i + 1,
                 deepfakePosition: deepfakePosition, // Position of the deepfake (1 = A, 2 = B)
@@ -124,22 +110,6 @@ class FakeFinderQuiz {
                 realImage: realImage,
                 explanation: `Question ${i + 1}: Look for subtle inconsistencies in facial features, unusual patterns, or artifacts that might indicate AI generation.`
             });
-        }
-        
-        console.log(`✅ Generated ${questions.length} questions with unique seed: ${uniqueSeed}`);
-        console.log(`📊 Pair selection order: [${pairSelectionOrder.join(', ')}]`);
-        console.log(`🎯 Deepfake positions: [${deepfakePositions.join(', ')}]`);
-        console.log(`🔍 Used pairs tracking: [${Array.from(usedPairs).join(', ')}]`);
-        console.log(`📝 Total available pairs: ${availablePairs.length}`);
-        console.log(`🎲 Using ${this.totalQuestions} questions from ${availablePairs.length} total pairs`);
-        console.log(`🔄 Randomization pool: ${availablePairs.length} pairs available for selection`);
-        
-        // Verify no duplicates in pair selection
-        const uniquePairs = new Set(pairSelectionOrder);
-        if (uniquePairs.size !== pairSelectionOrder.length) {
-            console.warn(`⚠️ WARNING: Duplicate pairs detected! Expected ${pairSelectionOrder.length} unique, got ${uniquePairs.size}`);
-        } else {
-            console.log(`✅ No duplicate pairs detected - all ${uniquePairs.size} pairs are unique`);
         }
         
         return questions;
@@ -176,26 +146,15 @@ class FakeFinderQuiz {
                 fakePath: pair.fake
             }));
             
-            // Store the full mapping for reference
-            this.fullMapping = mapping;
-            
-            console.log(`Loaded ${this.imagePairs.length} image pairs`);
-            
-            // Debug: Log first few pairs to verify mapping
-            console.log('First 3 pairs for debugging:');
-            this.imagePairs.slice(0, 3).forEach((pair, index) => {
-                console.log(`Pair ${index}: Real=${pair.primary}, Fake=${pair.secondary}`);
-            });
-            
-            // Validate that we have the expected structure
-            if (this.imagePairs.length === 0) {
-                throw new Error('No image pairs found in mapping');
-            }
-            
-            console.log(`✅ Mapping validation: ${this.imagePairs.length} pairs loaded successfully`);
-            console.log('✅ Each pair contains exactly 1 real and 1 fake image');
-            
-            return this.imagePairs;
+                    // Store the full mapping for reference
+        this.fullMapping = mapping;
+        
+        // Validate that we have the expected structure
+        if (this.imagePairs.length === 0) {
+            throw new Error('No image pairs found in mapping');
+        }
+        
+        return this.imagePairs;
         } catch (error) {
             console.error('Error loading image mapping:', error);
             
@@ -256,7 +215,6 @@ class FakeFinderQuiz {
     startQuiz() {
         // Check if questions are ready
         if (!this.questions || this.questions.length === 0) {
-            console.log('Questions not ready yet, showing loading...');
             this.showLoadingState();
             return;
         }
@@ -280,6 +238,9 @@ class FakeFinderQuiz {
         
         // Load first question
         this.loadQuestion();
+        
+        // Enable anti-cheat measures when quiz starts
+        this.enableAntiCheat();
         
         // Add entrance animation for quiz
         const quizContainer = document.getElementById('quizContainer');
@@ -306,7 +267,6 @@ class FakeFinderQuiz {
                 clearInterval(checkInterval);
                 startBtn.textContent = 'Start Quiz';
                 startBtn.disabled = false;
-                console.log('Questions loaded, quiz ready to start');
             }
         }, 100);
     }
@@ -548,6 +508,77 @@ class FakeFinderQuiz {
         
         // Update question count
         document.getElementById('questionCount').textContent = this.currentQuestion + 1;
+    }
+
+    // Anti-cheat measures
+    enableAntiCheat() {
+        if (!this.antiCheatEnabled) return;
+        
+        // Disable right-click context menu
+        document.addEventListener('contextmenu', (e) => e.preventDefault());
+        
+        // Disable F12, Ctrl+Shift+I, Ctrl+U
+        document.addEventListener('keydown', (e) => {
+            if (
+                e.key === 'F12' ||
+                (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+                (e.ctrlKey && e.key === 'u') ||
+                (e.ctrlKey && e.key === 'U')
+            ) {
+                e.preventDefault();
+                this.showAntiCheatWarning();
+            }
+        });
+        
+        // Disable developer tools detection
+        let devtools = { open: false, orientation: null };
+        setInterval(() => {
+            const threshold = 160;
+            if (window.outerHeight - window.innerHeight > threshold || 
+                window.outerWidth - window.innerWidth > threshold) {
+                if (!devtools.open) {
+                    devtools.open = true;
+                    this.showAntiCheatWarning();
+                }
+            } else {
+                devtools.open = false;
+            }
+        }, 500);
+        
+        // Disable image inspection
+        document.addEventListener('dragstart', (e) => e.preventDefault());
+        document.addEventListener('selectstart', (e) => e.preventDefault());
+    }
+
+    showAntiCheatWarning() {
+        const warning = document.createElement('div');
+        warning.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ff4444;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 10000;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        `;
+        warning.innerHTML = `
+            <h3>⚠️ Anti-Cheat Warning</h3>
+            <p>Developer tools detected. Please close them to continue.</p>
+            <p>Attempting to cheat will result in quiz disqualification.</p>
+        `;
+        
+        document.body.appendChild(warning);
+        
+        setTimeout(() => {
+            if (warning.parentNode) {
+                warning.parentNode.removeChild(warning);
+            }
+        }, 3000);
     }
 }
 
