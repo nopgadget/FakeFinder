@@ -47,14 +47,6 @@ class FakeFinderQuiz {
         const questionOrder = Array.from({length: this.totalQuestions}, (_, i) => i);
         this.shuffleArray(questionOrder);
         
-        // Create random deepfake positions with additional randomization
-        const deepfakePositions = [];
-        for (let i = 0; i < this.totalQuestions; i++) {
-            // Use multiple random sources for position
-            const positionRandom = Math.random() + (uniqueSeed / 1000000) + (i * 0.1);
-            deepfakePositions.push(positionRandom < 0.5 ? 1 : 2);
-        }
-        
         // Create a random pair selection order - ensure no duplicates within the same quiz
         const pairSelectionOrder = [];
         const usedPairs = new Set(); // Track used pairs to avoid duplicates
@@ -88,24 +80,23 @@ class FakeFinderQuiz {
         }
         
         for (let i = 0; i < this.totalQuestions; i++) {
-            // Use pre-generated random deepfake position
-            const deepfakePosition = deepfakePositions[i];
+            // Randomly decide which side gets the fake image (1 = left/A, 2 = right/B)
+            const fakeImagePosition = Math.random() < 0.5 ? 1 : 2;
             
             // Get image pair with enhanced randomization
             const pairIndex = pairSelectionOrder[i];
             const imagePair = availablePairs[pairIndex];
             
             // IMPORTANT: imagePair.primary is ALWAYS the real image, secondary is ALWAYS the fake image
-            // We just randomize which position (A or B) gets the real vs fake
             const realImage = imagePair.primary;      // Always the real image
             const fakeImage = imagePair.secondary;    // Always the fake image
             
             questions.push({
                 id: i + 1,
-                deepfakePosition: deepfakePosition, // Position of the deepfake (1 = A, 2 = B)
-                correctAnswer: deepfakePosition, // The correct answer is the deepfake position
-                image1: deepfakePosition === 1 ? fakeImage : realImage,  // Position A
-                image2: deepfakePosition === 1 ? realImage : fakeImage,  // Position B
+                fakeImagePosition: fakeImagePosition, // Position of the fake image (1 = left/A, 2 = right/B)
+                correctAnswer: fakeImagePosition, // The correct answer is the fake image position
+                image1: fakeImagePosition === 1 ? fakeImage : realImage,  // Position A (left)
+                image2: fakeImagePosition === 1 ? realImage : fakeImage,  // Position B (right)
                 deepfakeImage: fakeImage,
                 realImage: realImage,
                 explanation: `Question ${i + 1}: Look for subtle inconsistencies in facial features, unusual patterns, or artifacts that might indicate AI generation.`
@@ -325,7 +316,7 @@ class FakeFinderQuiz {
             this.showFeedback('Correct! 🎉 You identified the deepfake!', 'correct');
         } else {
             // Show which image was actually the deepfake
-            const deepfakeLabel = currentQ.deepfakePosition === 1 ? 'A' : 'B';
+            const deepfakeLabel = currentQ.fakeImagePosition === 1 ? 'A' : 'B';
             this.showFeedback(`Image ${deepfakeLabel} was the deepfake. Keep practicing! 💪`, 'incorrect');
         }
 
@@ -343,7 +334,7 @@ class FakeFinderQuiz {
             
             // Highlight the correct deepfake image
             const optionNumber = parseInt(option.dataset.option);
-            if (optionNumber === currentQ.deepfakePosition) {
+            if (optionNumber === currentQ.fakeImagePosition) {
                 option.classList.add('correct');
             } else if (optionNumber === this.selectedOption && !isCorrect) {
                 option.classList.add('incorrect');
